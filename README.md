@@ -54,6 +54,6 @@ lib/
 
 ## 👨‍💻 Developed By
 
-**Rameshwar Dayal Sharma**
+**Divya Sharma**
 
 ⭐ If you like this project, don't forget to star the repository!
