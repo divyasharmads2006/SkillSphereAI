@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile | SkillSphere AI</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:radial-gradient(circle at top left,#e8f1ff 0,#f8fbff 35%,#eef3f8 100%);
+    color:#1f2937;
+}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:265px;
+    background:linear-gradient(180deg,#0f172a,#1e293b);
+    color:white;
+    padding:28px 22px;
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    box-shadow:8px 0 30px rgba(15,23,42,.22);
+    z-index:10;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:38px;
+}
+
+.logo-icon{
+    width:46px;
+    height:46px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+}
+
+.logo h2{
+    font-size:21px;
+    font-weight:700;
+}
+
+.nav{
+    list-style:none;
+}
+
+.nav li{
+    margin-bottom:10px;
+}
+
+.nav a{
+    color:#cbd5e1;
+    text-decoration:none;
+    display:block;
+    padding:13px 15px;
+    border-radius:14px;
+    transition:.25s ease;
+    font-size:15px;
+}
+
+.nav a:hover,
+.nav a.active{
+    background:rgba(255,255,255,.12);
+    color:white;
+    transform:translateX(4px);
+}
+
+.main{
+    margin-left:265px;
+    width:calc(100% - 265px);
+    padding:30px;
+}
+
+.topbar{
+    background:rgba(255,255,255,.92);
+    border:1px solid rgba(226,232,240,.9);
+    border-radius:24px;
+    padding:26px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    box-shadow:0 18px 45px rgba(15,23,42,.08);
+    animation:fadeDown .45s ease;
+}
+
+.topbar h1{
+    font-size:31px;
+    color:#0f172a;
+    margin-bottom:7px;
+}
+
+.topbar p{
+    color:#64748b;
+    font-size:15px;
+}
+
+.user-pill{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:999px;
+    padding:10px 15px;
+    color:#334155;
+    white-space:nowrap;
+}
+
+.avatar-small{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#2563eb,#9333ea);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+}
+
+.profile-card{
+    margin-top:24px;
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:28px;
+    padding:30px;
+    box-shadow:0 18px 45px rgba(15,23,42,.08);
+    animation:fadeUp .45s ease;
+}
+
+.profile-hero{
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    border-radius:26px;
+    padding:30px;
+    color:white;
+    display:flex;
+    align-items:center;
+    gap:24px;
+    margin-bottom:28px;
+}
+
+.profile-avatar{
+    width:130px;
+    height:130px;
+    border-radius:35px;
+    background:white;
+    color:#2563eb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:52px;
+    font-weight:800;
+    box-shadow:0 18px 40px rgba(15,23,42,.22);
+    overflow:hidden;
+}
+
+.profile-avatar img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.profile-info h2{
+    font-size:30px;
+    margin-bottom:8px;
+}
+
+.profile-info p{
+    color:#e0e7ff;
+    margin-bottom:16px;
+}
+
+.badges{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.badge{
+    background:rgba(255,255,255,.18);
+    color:white;
+    padding:8px 12px;
+    border-radius:999px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+}
+
+.input-group{
+    display:grid;
+    gap:8px;
+}
+
+.input-group.full{
+    grid-column:1/-1;
+}
+
+.input-group label{
+    color:#334155;
+    font-weight:700;
+    font-size:14px;
+}
+
+.input-group input{
+    width:100%;
+    padding:14px 15px;
+    border:1px solid #cbd5e1;
+    border-radius:15px;
+    outline:none;
+    font-size:15px;
+    background:#f8fafc;
+}
+
+.input-group input:focus{
+    border-color:#2563eb;
+    background:white;
+    box-shadow:0 0 0 4px rgba(37,99,235,.1);
+}
+
+.input-group input:disabled{
+    background:#eef2f7;
+    color:#64748b;
+    cursor:not-allowed;
+}
+
+.actions{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:24px;
+}
+
+.btn{
+    border:none;
+    padding:13px 18px;
+    border-radius:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.25s ease;
+    font-size:15px;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-primary{
+    background:#2563eb;
+    color:white;
+}
+
+.btn-success{
+    background:#16a34a;
+    color:white;
+}
+
+.btn-dark{
+    background:#0f172a;
+    color:white;
+}
+
+.btn-soft{
+    background:#eef2ff;
+    color:#3730a3;
+}
+
+.hidden{
+    display:none;
+}
+
+.toast{
+    position:fixed;
+    right:24px;
+    bottom:24px;
+    background:#0f172a;
+    color:white;
+    padding:15px 18px;
+    border-radius:16px;
+    transform:translateY(120px);
+    opacity:0;
+    transition:.3s ease;
+    z-index:999;
+    max-width:330px;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(18px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+@keyframes fadeDown{
+    from{opacity:0;transform:translateY(-15px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+@media(max-width:950px){
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .app{
+        flex-direction:column;
+    }
+
+    .main{
+        margin-left:0;
+        width:100%;
+        padding:18px;
+    }
+
+    .topbar,
+    .profile-hero{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body onload="initProfile()">
+
+<div class="app">
+
+<aside class="sidebar">
+    <div class="logo">
+        <div class="logo-icon">✦</div>
+        <h2>SkillSphere AI</h2>
+    </div>
+
+    <ul class="nav">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="skills.html">Skills</a></li>
+        <li><a href="requests.html">Requests</a></li>
+        <li><a class="active" href="profile.html">Profile</a></li>
+        <li><a href="index.html">Logout</a></li>
+    </ul>
+</aside>
+
+<main class="main">
+
+<section class="topbar">
+    <div>
+        <h1>My Profile</h1>
+        <p>Edit your personal details and manage your skill identity.</p>
+    </div>
+
+    <div class="user-pill">
+        <div class="avatar-small" id="topAvatar">U</div>
+        <div>
+            <strong id="topUserName">Student</strong><br>
+            <small id="topUserEmail">SkillSphere Member</small>
+        </div>
+    </div>
+</section>
+
+<section class="profile-card">
+
+    <div class="profile-hero">
+        <div class="profile-avatar" id="profileAvatar">U</div>
+
+        <div class="profile-info">
+            <h2 id="heroName">Student</h2>
+            <p id="heroEmail">SkillSphere Member</p>
+
+            <div class="badges">
+                <span class="badge" id="teachingBadge">Teaching: -</span>
+                <span class="badge" id="learningBadge">Learning: -</span>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="profilePicInput" accept="image/*" class="hidden" onchange="changeProfilePicture(event)">
+
+    <div class="actions" style="margin-top:-8px;margin-bottom:25px;">
+        <button class="btn btn-soft" onclick="document.getElementById('profilePicInput').click()">
+            Change Profile Picture
+        </button>
+    </div>
+
+    <div class="form-grid">
+        <div class="input-group">
+            <label>Full Name</label>
+            <input type="text" id="name">
+        </div>
+
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="email" disabled>
+        </div>
+
+        <div class="input-group">
+            <label>Teaching Skill</label>
+            <input type="text" id="teachingSkill">
+        </div>
+
+        <div class="input-group">
+            <label>Learning Skill</label>
+            <input type="text" id="learningSkill">
+        </div>
+    </div>
+
+    <div class="actions">
+        <button class="btn btn-success" onclick="updateProfile()">Save Changes</button>
+        <button class="btn btn-dark" onclick="resetProfile()">Reset</button>
+    </div>
+
+</section>
+
+</main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API_BASE = "http://localhost:8080";
+
+function initProfile(){
+    loadProfileData();
+}
+
+function loadProfileData(){
+    const name =
+        localStorage.getItem("userName") ||
+        localStorage.getItem("name") ||
+        "Student";
+
+    const email =
+        localStorage.getItem("userEmail") ||
+        localStorage.getItem("email") ||
+        "";
+
+    const teachingSkill =
+        localStorage.getItem("teachingSkill") ||
+        localStorage.getItem("userTeachingSkill") ||
+        "";
+
+    const learningSkill =
+        localStorage.getItem("learningSkill") ||
+        localStorage.getItem("userLearningSkill") ||
+        "";
+
+    document.getElementById("name").value = name;
+    document.getElementById("email").value = email;
+    document.getElementById("teachingSkill").value = teachingSkill;
+    document.getElementById("learningSkill").value = learningSkill;
+
+    refreshUI(name,email,teachingSkill,learningSkill);
+    loadSavedProfilePicture();
+}
+
+function refreshUI(name,email,teachingSkill,learningSkill){
+    document.getElementById("topUserName").innerText = name;
+    document.getElementById("topUserEmail").innerText = email || "SkillSphere Member";
+    document.getElementById("heroName").innerText = name;
+    document.getElementById("heroEmail").innerText = email || "SkillSphere Member";
+
+    document.getElementById("topAvatar").innerText = getInitials(name);
+    document.getElementById("profileAvatar").innerText = getInitials(name);
+
+    document.getElementById("teachingBadge").innerText =
+        "Teaching: " + (teachingSkill || "-");
+
+    document.getElementById("learningBadge").innerText =
+        "Learning: " + (learningSkill || "-");
+}
+
+async function updateProfile(){
+    const userId = localStorage.getItem("userId");
+
+    const name = document.getElementById("name").value.trim();
+    const teachingSkill = document.getElementById("teachingSkill").value.trim();
+    const learningSkill = document.getElementById("learningSkill").value.trim();
+    const email = document.getElementById("email").value.trim();
+
+    if(!userId){
+        showToast("Please login again.");
+        return;
+    }
+
+    if(name === "" || teachingSkill === "" || learningSkill === ""){
+        showToast("Please fill all fields.");
+        return;
+    }
+
+    try{
+        const url =
+            `${API_BASE}/updateProfile?userId=${encodeURIComponent(userId)}` +
+            `&name=${encodeURIComponent(name)}` +
+            `&teachingSkill=${encodeURIComponent(teachingSkill)}` +
+            `&learningSkill=${encodeURIComponent(learningSkill)}`;
+
+        const response = await fetch(url);
+        const result = await response.text();
+
+        if(result.trim() === "updated"){
+            localStorage.setItem("userName",name);
+            localStorage.setItem("name",name);
+            localStorage.setItem("teachingSkill",teachingSkill);
+            localStorage.setItem("userTeachingSkill",teachingSkill);
+            localStorage.setItem("learningSkill",learningSkill);
+            localStorage.setItem("userLearningSkill",learningSkill);
+
+            refreshUI(name,email,teachingSkill,learningSkill);
+            loadSavedProfilePicture();
+            showToast("Profile updated successfully.");
+        }else{
+            showToast("Profile update failed.");
+        }
+
+    }catch(error){
+        showToast("Backend not reachable.");
+    }
+}
+
+function resetProfile(){
+    loadProfileData();
+    showToast("Profile reset.");
+}
+
+function changeProfilePicture(event){
+    const file = event.target.files[0];
+
+    if(!file){
+        return;
+    }
+
+    if(!file.type.startsWith("image/")){
+        showToast("Please select an image file.");
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e){
+        const imageData = e.target.result;
+        localStorage.setItem("profilePicture",imageData);
+        showProfilePicture(imageData);
+        showToast("Profile picture updated.");
+    };
+
+    reader.readAsDataURL(file);
+}
+
+function loadSavedProfilePicture(){
+    const imageData = localStorage.getItem("profilePicture");
+
+    if(imageData){
+        showProfilePicture(imageData);
+    }
+}
+
+function showProfilePicture(imageData){
+    const profileAvatar = document.getElementById("profileAvatar");
+    const topAvatar = document.getElementById("topAvatar");
+
+    profileAvatar.innerHTML = `<img src="${imageData}" alt="Profile Picture">`;
+
+    topAvatar.style.backgroundImage = `url(${imageData})`;
+    topAvatar.style.backgroundSize = "cover";
+    topAvatar.style.backgroundPosition = "center";
+    topAvatar.innerText = "";
+}
+
+function getInitials(name){
+    if(!name || name.trim() === ""){
+        return "U";
+    }
+
+    const parts = name.trim().split(" ");
+
+    if(parts.length === 1){
+        return parts[0].charAt(0).toUpperCase();
+    }
+
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+}
+
+function showToast(message){
+    const toast = document.getElementById("toast");
+    toast.innerText = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2600);
+}
+</script>
+
+</body>
+</html>

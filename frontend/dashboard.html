@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard | SkillSphere AI</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:radial-gradient(circle at top left,#e8f1ff 0,#f8fbff 35%,#eef3f8 100%);
+    color:#1f2937;
+}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:265px;
+    background:linear-gradient(180deg,#0f172a,#1e293b);
+    color:white;
+    padding:28px 22px;
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    box-shadow:8px 0 30px rgba(15,23,42,.22);
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:38px;
+}
+
+.logo-icon{
+    width:46px;
+    height:46px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+}
+
+.logo h2{
+    font-size:21px;
+    font-weight:700;
+}
+
+.nav{
+    list-style:none;
+}
+
+.nav li{
+    margin-bottom:10px;
+}
+
+.nav a{
+    color:#cbd5e1;
+    text-decoration:none;
+    display:block;
+    padding:13px 15px;
+    border-radius:14px;
+    transition:.25s ease;
+    font-size:15px;
+}
+
+.nav a:hover,
+.nav a.active{
+    background:rgba(255,255,255,.12);
+    color:white;
+    transform:translateX(4px);
+}
+
+.main{
+    margin-left:265px;
+    width:calc(100% - 265px);
+    padding:30px;
+}
+
+.topbar{
+    background:rgba(255,255,255,.92);
+    border:1px solid rgba(226,232,240,.9);
+    border-radius:24px;
+    padding:26px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    box-shadow:0 18px 45px rgba(15,23,42,.08);
+    animation:fadeDown .45s ease;
+}
+
+.topbar h1{
+    font-size:31px;
+    color:#0f172a;
+    margin-bottom:7px;
+}
+
+.topbar p{
+    color:#64748b;
+    font-size:15px;
+}
+
+.user-pill{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:999px;
+    padding:10px 15px;
+    color:#334155;
+    white-space:nowrap;
+}
+
+.avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#2563eb,#9333ea);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+}
+
+.dashboard-grid{
+    display:grid;
+    grid-template-columns:1.4fr .8fr;
+    gap:22px;
+    margin-top:24px;
+}
+
+.panel{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:26px;
+    padding:24px;
+    box-shadow:0 18px 45px rgba(15,23,42,.08);
+    animation:fadeUp .45s ease;
+}
+
+.panel h2{
+    color:#0f172a;
+    margin-bottom:10px;
+}
+
+.panel p{
+    color:#64748b;
+    line-height:1.6;
+}
+
+.hero-card{
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:white;
+    border-radius:28px;
+    padding:30px;
+    box-shadow:0 22px 50px rgba(37,99,235,.25);
+    margin-top:24px;
+    animation:fadeUp .45s ease;
+}
+
+.hero-card h2{
+    font-size:28px;
+    margin-bottom:12px;
+}
+
+.hero-card p{
+    color:#e0e7ff;
+    max-width:720px;
+    line-height:1.7;
+}
+
+.hero-actions{
+    margin-top:22px;
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    border:none;
+    padding:13px 18px;
+    border-radius:14px;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    transition:.25s ease;
+    font-size:15px;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-light{
+    background:white;
+    color:#2563eb;
+}
+
+.btn-dark{
+    background:#0f172a;
+    color:white;
+}
+
+.btn-soft{
+    background:#eef2ff;
+    color:#3730a3;
+}
+
+.quick-list{
+    display:grid;
+    gap:12px;
+    margin-top:18px;
+}
+
+.quick-item{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:18px;
+    padding:16px;
+    display:flex;
+    gap:14px;
+    align-items:center;
+}
+
+.quick-icon{
+    width:42px;
+    height:42px;
+    border-radius:14px;
+    background:#eef2ff;
+    color:#2563eb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+}
+
+.notifications{
+    margin-top:18px;
+    display:grid;
+    gap:12px;
+}
+
+.notification{
+    background:#f8fafc;
+    border-left:5px solid #2563eb;
+    padding:14px 16px;
+    border-radius:14px;
+    color:#334155;
+}
+
+.empty{
+    background:#f8fafc;
+    border:1px dashed #cbd5e1;
+    padding:20px;
+    border-radius:18px;
+    color:#64748b;
+}
+
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(18px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+@keyframes fadeDown{
+    from{opacity:0;transform:translateY(-15px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+@media(max-width:950px){
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .app{
+        flex-direction:column;
+    }
+
+    .main{
+        margin-left:0;
+        width:100%;
+        padding:18px;
+    }
+
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+</style>
+</head>
+
+<body onload="initDashboard()">
+
+<div class="app">
+
+<aside class="sidebar">
+    <div class="logo">
+        <div class="logo-icon">✦</div>
+        <h2>SkillSphere AI</h2>
+    </div>
+
+    <ul class="nav">
+        <li><a class="active" href="dashboard.html">Dashboard</a></li>
+        <li><a href="skills.html">Skills</a></li>
+        <li><a href="requests.html">Requests</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="index.html">Logout</a></li>
+    </ul>
+</aside>
+
+<main class="main">
+
+    <section class="topbar">
+        <div>
+            <h1 id="welcomeName">Welcome Back</h1>
+            <p>Your personal SkillSphere AI learning workspace.</p>
+        </div>
+
+        <div class="user-pill">
+            <div class="avatar" id="topAvatar">U</div>
+            <div>
+                <strong id="topUserName">Student</strong><br>
+                <small id="topUserEmail">SkillSphere Member</small>
+            </div>
+        </div>
+    </section>
+
+    <section class="hero-card">
+        <h2>Learn faster by swapping skills.</h2>
+        <p>
+            Discover mentors, send requests, schedule Google Meet sessions,
+            and build your reputation through ratings and reviews.
+        </p>
+
+        <div class="hero-actions">
+            <a href="skills.html" class="btn btn-light">Open Skills Marketplace</a>
+            <a href="requests.html" class="btn btn-dark">Manage Requests</a>
+        </div>
+    </section>
+
+    <section class="dashboard-grid">
+
+        <div class="panel">
+            <h2>Notifications</h2>
+            <p>Latest pending request updates from your network.</p>
+
+            <div class="notifications" id="notificationsBox">
+                <div class="empty">Loading notifications...</div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <h2>Quick Actions</h2>
+            <p>Continue your workflow.</p>
+
+            <div class="quick-list">
+                <a href="skills.html" class="quick-item" style="text-decoration:none;">
+                    <div class="quick-icon">🔎</div>
+                    <div>
+                        <strong style="color:#0f172a;">Explore Skills</strong>
+                        <p>Find mentors and send requests.</p>
+                    </div>
+                </a>
+
+                <a href="requests.html" class="quick-item" style="text-decoration:none;">
+                    <div class="quick-icon">🤝</div>
+                    <div>
+                        <strong style="color:#0f172a;">Requests</strong>
+                        <p>Accept, reject and schedule meetings.</p>
+                    </div>
+                </a>
+
+                <a href="profile.html" class="quick-item" style="text-decoration:none;">
+                    <div class="quick-icon">👤</div>
+                    <div>
+                        <strong style="color:#0f172a;">Profile</strong>
+                        <p>Update your skills and details.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </section>
+
+</main>
+</div>
+
+<script>
+const API_BASE = "http://localhost:8080";
+
+function initDashboard(){
+    setupUserHeader();
+    loadNotifications();
+}
+
+function setupUserHeader(){
+    const name =
+        localStorage.getItem("userName") ||
+        localStorage.getItem("name") ||
+        "Student";
+
+    const email =
+        localStorage.getItem("userEmail") ||
+        localStorage.getItem("email") ||
+        "SkillSphere Member";
+
+    document.getElementById("welcomeName").innerText = "Welcome Back, " + name;
+    document.getElementById("topUserName").innerText = name;
+    document.getElementById("topUserEmail").innerText = email;
+    document.getElementById("topAvatar").innerText = getInitials(name);
+}
+
+function getInitials(name){
+    if(!name || name.trim() === "") return "U";
+
+    const parts = name.trim().split(" ");
+    if(parts.length === 1){
+        return parts[0].charAt(0).toUpperCase();
+    }
+
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+}
+
+async function loadNotifications(){
+    const userId = localStorage.getItem("userId");
+    const box = document.getElementById("notificationsBox");
+
+    if(!userId){
+        box.innerHTML = `<div class="empty">Please login again.</div>`;
+        return;
+    }
+
+    try{
+        const response = await fetch(`${API_BASE}/notifications?userId=${encodeURIComponent(userId)}`);
+        const result = await response.text();
+
+        box.innerHTML = "";
+
+        if(result.trim() === ""){
+            box.innerHTML = `<div class="empty">No new notifications</div>`;
+            return;
+        }
+
+        const notifications = result.trim().split("\n");
+
+        notifications.forEach(notification => {
+            box.innerHTML += `
+                <div class="notification">
+                    ${safe(notification)}
+                </div>
+            `;
+        });
+
+    }catch(error){
+        box.innerHTML = `<div class="empty">Backend not reachable. Start BackendServer.java.</div>`;
+    }
+}
+
+function safe(value){
+    if(value === undefined || value === null || value === "null") return "";
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+</script>
+
+</body>
+</html>

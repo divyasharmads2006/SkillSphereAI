@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register | SkillSphere AI</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:radial-gradient(circle at top left,#e8f1ff 0,#f8fbff 35%,#eef3f8 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+}
+
+.auth-card{
+    width:100%;
+    max-width:500px;
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:30px;
+    padding:38px;
+    text-align:center;
+    box-shadow:0 25px 65px rgba(15,23,42,.14);
+}
+
+.logo-icon{
+    width:66px;
+    height:66px;
+    margin:0 auto 18px;
+    border-radius:22px;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+}
+
+h1{
+    font-size:32px;
+    color:#0f172a;
+    margin-bottom:8px;
+}
+
+p{
+    color:#64748b;
+    margin-bottom:24px;
+}
+
+input{
+    width:100%;
+    padding:15px;
+    border:1px solid #cbd5e1;
+    border-radius:15px;
+    outline:none;
+    font-size:15px;
+    margin-bottom:14px;
+    background:#f8fafc;
+}
+
+input:focus{
+    border-color:#2563eb;
+    background:white;
+    box-shadow:0 0 0 4px rgba(37,99,235,.1);
+}
+
+button{
+    width:100%;
+    border:none;
+    padding:15px;
+    border-radius:16px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    margin-top:6px;
+}
+
+button:hover{
+    background:#1d4ed8;
+}
+
+a{
+    display:inline-block;
+    margin-top:18px;
+    color:#3730a3;
+    text-decoration:none;
+    font-weight:600;
+}
+</style>
+</head>
+
+<body>
+
+<div class="auth-card">
+    <div class="logo-icon">✦</div>
+    <h1>Create Account</h1>
+    <p>Join SkillSphere AI and start swapping skills.</p>
+
+    <input type="text" id="name" placeholder="Full Name">
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <input type="text" id="teachingSkill" placeholder="Teaching Skill">
+    <input type="text" id="learningSkill" placeholder="Learning Skill">
+
+    <button onclick="registerUser()">Register</button>
+
+    <a href="login.html">Already have an account? Login</a>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

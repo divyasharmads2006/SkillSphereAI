@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Requests | SkillSphere AI</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:radial-gradient(circle at top left,#e8f1ff 0,#f8fbff 35%,#eef3f8 100%);
+    color:#1f2937;
+}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+.sidebar{
+    width:265px;
+    background:linear-gradient(180deg,#0f172a,#1e293b);
+    color:white;
+    padding:28px 22px;
+    position:fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    box-shadow:8px 0 30px rgba(15,23,42,.22);
+    z-index:10;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:38px;
+}
+
+.logo-icon{
+    width:46px;
+    height:46px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:22px;
+}
+
+.logo h2{
+    font-size:21px;
+    font-weight:700;
+}
+
+.nav{
+    list-style:none;
+}
+
+.nav li{
+    margin-bottom:10px;
+}
+
+.nav a{
+    color:#cbd5e1;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:13px 15px;
+    border-radius:14px;
+    transition:.25s ease;
+    font-size:15px;
+}
+
+.nav a:hover,
+.nav a.active{
+    background:rgba(255,255,255,.12);
+    color:white;
+    transform:translateX(4px);
+}
+
+.main{
+    margin-left:265px;
+    width:calc(100% - 265px);
+    padding:30px;
+}
+
+.topbar{
+    background:rgba(255,255,255,.92);
+    border:1px solid rgba(226,232,240,.9);
+    border-radius:24px;
+    padding:26px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    box-shadow:0 18px 45px rgba(15,23,42,.08);
+    animation:fadeDown .45s ease;
+}
+
+.topbar h1{
+    font-size:31px;
+    color:#0f172a;
+    margin-bottom:7px;
+}
+
+.topbar p{
+    color:#64748b;
+    font-size:15px;
+}
+
+.user-pill{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:999px;
+    padding:10px 15px;
+    color:#334155;
+    white-space:nowrap;
+}
+
+.avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#2563eb,#9333ea);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin:24px 0;
+}
+
+.stat-card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:22px;
+    padding:20px;
+    box-shadow:0 14px 34px rgba(15,23,42,.07);
+    transition:.25s ease;
+    animation:fadeUp .45s ease;
+}
+
+.stat-card:hover{
+    transform:translateY(-5px);
+}
+
+.stat-card span{
+    font-size:13px;
+    color:#64748b;
+}
+
+.stat-card h3{
+    margin-top:8px;
+    font-size:30px;
+    color:#0f172a;
+}
+
+.toolbar{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:22px;
+    padding:18px;
+    margin-bottom:22px;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 14px 34px rgba(15,23,42,.06);
+}
+
+.search-box{
+    flex:1;
+    position:relative;
+}
+
+.search-box input{
+    width:100%;
+    padding:14px 16px 14px 44px;
+    border:1px solid #dbe3ee;
+    border-radius:15px;
+    outline:none;
+    font-size:14px;
+    background:#f8fafc;
+}
+
+.search-box input:focus{
+    border-color:#2563eb;
+    background:white;
+    box-shadow:0 0 0 4px rgba(37,99,235,.1);
+}
+
+.search-icon{
+    position:absolute;
+    top:50%;
+    left:16px;
+    transform:translateY(-50%);
+    color:#64748b;
+}
+
+.filters{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.filter-btn{
+    border:none;
+    background:#f1f5f9;
+    color:#475569;
+    padding:12px 16px;
+    border-radius:999px;
+    cursor:pointer;
+    font-weight:600;
+    transition:.25s ease;
+}
+
+.filter-btn:hover,
+.filter-btn.active{
+    background:#2563eb;
+    color:white;
+}
+
+.requests-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+    gap:22px;
+}
+
+.request-card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:26px;
+    padding:22px;
+    box-shadow:0 18px 45px rgba(15,23,42,.08);
+    transition:.28s ease;
+    position:relative;
+    overflow:hidden;
+    animation:fadeUp .4s ease;
+}
+
+.request-card::before{
+    content:"";
+    position:absolute;
+    inset:0 0 auto 0;
+    height:5px;
+    background:linear-gradient(90deg,#2563eb,#7c3aed,#06b6d4);
+}
+
+.request-card:hover{
+    transform:translateY(-7px);
+}
+
+.card-head{
+    display:flex;
+    justify-content:space-between;
+    gap:14px;
+    margin-bottom:18px;
+}
+
+.person{
+    display:flex;
+    gap:14px;
+    align-items:center;
+}
+
+.person-avatar{
+    width:52px;
+    height:52px;
+    border-radius:18px;
+    background:linear-gradient(135deg,#dbeafe,#ede9fe);
+    color:#1d4ed8;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+    font-size:20px;
+}
+
+.person h3{
+    color:#0f172a;
+    font-size:18px;
+    margin-bottom:3px;
+}
+
+.person p{
+    color:#64748b;
+    font-size:13px;
+}
+
+.badges{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:17px;
+}
+
+.badge{
+    padding:7px 11px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.badge-incoming{background:#ecfeff;color:#0891b2;}
+.badge-outgoing{background:#f5f3ff;color:#7c3aed;}
+.badge-pending{background:#fff7ed;color:#ea580c;}
+.badge-accepted{background:#ecfdf5;color:#059669;}
+
+.skill-box{
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:18px;
+    padding:15px;
+    margin-bottom:17px;
+}
+
+.skill-box span{
+    font-size:12px;
+    color:#64748b;
+    font-weight:700;
+    text-transform:uppercase;
+}
+
+.skill-box h4{
+    margin-top:5px;
+    color:#111827;
+    font-size:18px;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-top:15px;
+}
+
+.btn{
+    border:none;
+    padding:12px 15px;
+    border-radius:14px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.25s ease;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-size:14px;
+    text-decoration:none;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btn-primary{background:#2563eb;color:white;}
+.btn-danger{background:#ef4444;color:white;}
+.btn-success{background:#16a34a;color:white;}
+.btn-dark{background:#0f172a;color:white;}
+.btn-soft{background:#eef2ff;color:#3730a3;}
+
+.btn:disabled{
+    opacity:.58;
+    cursor:not-allowed;
+    transform:none;
+}
+
+.meeting-panel,
+.review-panel{
+    margin-top:18px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:20px;
+    padding:16px;
+}
+
+.panel-title{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:13px;
+}
+
+.panel-title h4{
+    color:#0f172a;
+    font-size:16px;
+}
+
+.form-grid{
+    display:grid;
+    gap:12px;
+}
+
+.input-group label{
+    display:block;
+    margin-bottom:7px;
+    color:#475569;
+    font-size:13px;
+    font-weight:700;
+}
+
+.input-group input,
+.input-group textarea{
+    width:100%;
+    padding:12px 13px;
+    border:1px solid #cbd5e1;
+    border-radius:14px;
+    outline:none;
+    background:white;
+    color:#0f172a;
+    font-size:14px;
+}
+
+.input-group input:focus,
+.input-group textarea:focus{
+    border-color:#2563eb;
+    box-shadow:0 0 0 4px rgba(37,99,235,.1);
+}
+
+.input-group textarea{
+    resize:vertical;
+    min-height:88px;
+}
+
+.meeting-info{
+    display:grid;
+    gap:9px;
+    color:#334155;
+    font-size:14px;
+}
+
+.stars{
+    display:flex;
+    gap:6px;
+    font-size:30px;
+    margin:8px 0 12px;
+    user-select:none;
+}
+
+.star{
+    cursor:pointer;
+    color:#cbd5e1;
+    transition:.2s ease;
+}
+
+.star:hover{
+    transform:scale(1.18) rotate(-6deg);
+}
+
+.star.active{
+    color:#f59e0b;
+}
+
+.review-status{
+    margin-top:10px;
+    font-size:13px;
+    color:#64748b;
+    font-weight:600;
+}
+
+.empty-state{
+    grid-column:1/-1;
+    background:white;
+    border:1px dashed #cbd5e1;
+    border-radius:28px;
+    padding:55px 22px;
+    text-align:center;
+    color:#64748b;
+}
+
+.empty-icon{
+    font-size:54px;
+    margin-bottom:12px;
+}
+
+.toast{
+    position:fixed;
+    right:24px;
+    bottom:24px;
+    background:#0f172a;
+    color:white;
+    padding:15px 18px;
+    border-radius:16px;
+    transform:translateY(120px);
+    opacity:0;
+    transition:.3s ease;
+    z-index:999;
+    max-width:330px;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+.loader{
+    grid-column:1/-1;
+    text-align:center;
+    padding:45px;
+    color:#64748b;
+}
+
+.spinner{
+    width:42px;
+    height:42px;
+    border:4px solid #dbeafe;
+    border-top-color:#2563eb;
+    border-radius:50%;
+    animation:spin .8s linear infinite;
+    margin:0 auto 14px;
+}
+
+@keyframes spin{
+    to{transform:rotate(360deg);}
+}
+
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(18px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+@keyframes fadeDown{
+    from{opacity:0;transform:translateY(-15px);}
+    to{opacity:1;transform:translateY(0);}
+}
+
+@media(max-width:950px){
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .app{
+        flex-direction:column;
+    }
+
+    .main{
+        margin-left:0;
+        width:100%;
+        padding:18px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+}
+
+@media(max-width:640px){
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .toolbar{
+        flex-direction:column;
+        align-items:stretch;
+    }
+
+    .requests-grid{
+        grid-template-columns:1fr;
+    }
+
+    .actions .btn{
+        width:100%;
+    }
+}
+</style>
+</head>
+
+<body onload="initRequestsPage()">
+
+<div class="app">
+
+<aside class="sidebar">
+    <div class="logo">
+        <div class="logo-icon">✦</div>
+        <h2>SkillSphere AI</h2>
+    </div>
+
+    <ul class="nav">
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="skills.html">Skills</a></li>
+        <li><a class="active" href="requests.html">Requests</a></li>
+        <li><a href="profile.html">Profile</a></li>
+        <li><a href="index.html">Logout</a></li>
+    </ul>
+</aside>
+
+<main class="main">
+
+    <section class="topbar">
+        <div>
+            <h1>Mentorship Requests</h1>
+            <p>Manage requests, schedule Google Meet sessions, and submit mentor reviews.</p>
+        </div>
+
+        <div class="user-pill">
+            <div class="avatar" id="topAvatar">U</div>
+            <div>
+                <strong id="topUserName">Student</strong><br>
+                <small id="topUserEmail">SkillSphere Member</small>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stat-card">
+            <span>Total Requests</span>
+            <h3 id="totalCount">0</h3>
+        </div>
+        <div class="stat-card">
+            <span>Pending</span>
+            <h3 id="pendingCount">0</h3>
+        </div>
+        <div class="stat-card">
+            <span>Accepted</span>
+            <h3 id="acceptedCount">0</h3>
+        </div>
+        <div class="stat-card">
+            <span>Meetings</span>
+            <h3 id="meetingCount">0</h3>
+        </div>
+    </section>
+
+    <section class="toolbar">
+        <div class="search-box">
+            <span class="search-icon">🔎</span>
+            <input type="text" id="searchInput" placeholder="Search by name, skill or status..." oninput="renderRequests()">
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" onclick="setFilter('All',this)">All</button>
+            <button class="filter-btn" onclick="setFilter('Incoming',this)">Incoming</button>
+            <button class="filter-btn" onclick="setFilter('Outgoing',this)">Outgoing</button>
+            <button class="filter-btn" onclick="setFilter('Pending',this)">Pending</button>
+            <button class="filter-btn" onclick="setFilter('Accepted',this)">Accepted</button>
+        </div>
+    </section>
+
+    <section class="requests-grid" id="requestsGrid">
+        <div class="loader">
+            <div class="spinner"></div>
+            Loading requests...
+        </div>
+    </section>
+
+</main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API_BASE = "http://localhost:8080";
+
+let allRequests = [];
+let activeFilter = "All";
+let selectedRatings = {};
+
+function initRequestsPage(){
+    setupUserHeader();
+    loadRequests();
+}
+
+function setupUserHeader(){
+    const name =
+        localStorage.getItem("userName") ||
+        localStorage.getItem("name") ||
+        "Student";
+
+    const email =
+        localStorage.getItem("userEmail") ||
+        localStorage.getItem("email") ||
+        "SkillSphere Member";
+
+    document.getElementById("topUserName").innerText = name;
+    document.getElementById("topUserEmail").innerText = email;
+    document.getElementById("topAvatar").innerText = getInitials(name);
+}
+
+function getInitials(name){
+    if(!name || name.trim() === "") return "U";
+
+    const parts = name.trim().split(" ");
+    if(parts.length === 1){
+        return parts[0].charAt(0).toUpperCase();
+    }
+
+    return (parts[0].charAt(0) + parts[parts.length - 1].charAt(0)).toUpperCase();
+}
+
+async function loadRequests(){
+    const userId = localStorage.getItem("userId");
+
+    if(!userId){
+        showToast("Please login again.");
+        setTimeout(() => {
+            window.location.href = "index.html";
+        }, 900);
+        return;
+    }
+
+    const grid = document.getElementById("requestsGrid");
+    grid.innerHTML = `
+        <div class="loader">
+            <div class="spinner"></div>
+            Loading requests...
+        </div>
+    `;
+
+    try{
+        const response = await fetch(`${API_BASE}/myRequests?userId=${encodeURIComponent(userId)}`);
+        const result = await response.text();
+
+        allRequests = parseRequests(result);
+        updateStats();
+        renderRequests();
+
+    }catch(error){
+        grid.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">⚠️</div>
+                <h2>Backend not reachable</h2>
+                <p>Please start BackendServer.java on port 8080 and refresh this page.</p>
+            </div>
+        `;
+    }
+}
+
+function parseRequests(result){
+    if(!result || result.trim() === "") return [];
+
+    return result
+        .trim()
+        .split("\n")
+        .filter(row => row.trim() !== "")
+        .map(row => {
+            const data = row.split("|");
+
+            return {
+                requestId: data[0] || "",
+                type: data[1] || "",
+                skill: data[2] || "",
+                employee: data[3] || "",
+                status: data[4] || "",
+                meetLink: data[5] || "",
+                meetingDate: data[6] || "",
+                meetingTime: data[7] || "",
+                otherId: data[8] || ""
+            };
+        });
+}
+
+function updateStats(){
+    document.getElementById("totalCount").innerText = allRequests.length;
+
+    document.getElementById("pendingCount").innerText =
+        allRequests.filter(r => r.status === "Pending").length;
+
+    document.getElementById("acceptedCount").innerText =
+        allRequests.filter(r => r.status === "Accepted").length;
+
+    document.getElementById("meetingCount").innerText =
+        allRequests.filter(r => hasMeeting(r)).length;
+}
+
+function setFilter(filter,btn){
+    activeFilter = filter;
+
+    document.querySelectorAll(".filter-btn").forEach(button => {
+        button.classList.remove("active");
+    });
+
+    btn.classList.add("active");
+    renderRequests();
+}
+
+function renderRequests(){
+    const grid = document.getElementById("requestsGrid");
+    const search = document.getElementById("searchInput").value.toLowerCase().trim();
+
+    let filtered = allRequests.filter(req => {
+        const searchText = `${req.type} ${req.skill} ${req.employee} ${req.status}`.toLowerCase();
+
+        const matchesSearch = searchText.includes(search);
+
+        const matchesFilter =
+            activeFilter === "All" ||
+            req.type === activeFilter ||
+            req.status === activeFilter;
+
+        return matchesSearch && matchesFilter;
+    });
+
+    if(filtered.length === 0){
+        grid.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">📭</div>
+                <h2>No requests found</h2>
+                <p>Your mentorship requests will appear here.</p>
+            </div>
+        `;
+        return;
+    }
+
+    grid.innerHTML = filtered.map(req => buildRequestCard(req)).join("");
+    applySavedRatingVisuals();
+}
+function buildRequestCard(req){
+    const requestId = safe(req.requestId);
+    const type = safe(req.type);
+    const skill = safe(req.skill);
+    const employee = safe(req.employee);
+    const status = safe(req.status);
+
+    return `
+        <article class="request-card">
+
+            <div class="card-head">
+                <div class="person">
+                    <div class="person-avatar">${getInitials(employee)}</div>
+                    <div>
+                        <h3>${employee}</h3>
+                        <p>${type} mentorship request</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="badges">
+                <span class="badge ${type === "Incoming" ? "badge-incoming" : "badge-outgoing"}">${type}</span>
+                <span class="badge ${status === "Accepted" ? "badge-accepted" : "badge-pending"}">${status}</span>
+            </div>
+
+            <div class="skill-box">
+                <span>Skill</span>
+                <h4>${skill}</h4>
+            </div>
+
+            ${buildActionButtons(req)}
+            ${buildMeetingSection(req)}
+            ${buildReviewSection(req)}
+
+        </article>
+    `;
+}
+
+function buildActionButtons(req){
+    if(req.status === "Pending" && req.type === "Incoming"){
+        return `
+            <div class="actions">
+                <button class="btn btn-success" onclick="acceptRequest('${req.requestId}')">Accept</button>
+                <button class="btn btn-danger" onclick="rejectRequest('${req.requestId}')">Reject</button>
+            </div>
+        `;
+    }
+
+    if(req.status === "Pending" && req.type === "Outgoing"){
+        return `
+            <div class="actions">
+                <button class="btn btn-soft" disabled>Waiting for mentor response</button>
+            </div>
+        `;
+    }
+
+    return "";
+}
+
+function buildMeetingSection(req){
+    if(req.status !== "Accepted") return "";
+
+    if(hasMeeting(req)){
+        return `
+            <div class="meeting-panel">
+                <div class="panel-title">
+                    <h4>Google Meet Scheduled</h4>
+                </div>
+
+                <div class="meeting-info">
+                    <div><b>Date:</b> ${safe(req.meetingDate)}</div>
+                    <div><b>Time:</b> ${formatTime(req.meetingTime)}</div>
+                    <div><b>Meet:</b> Ready to join</div>
+                </div>
+
+                <div class="actions">
+                    <a class="btn btn-primary" href="${safeUrl(req.meetLink)}" target="_blank">
+                        Join Meeting
+                    </a>
+                </div>
+            </div>
+        `;
+    }
+
+    if(req.type === "Incoming"){
+        return `
+            <div class="meeting-panel">
+                <div class="panel-title">
+                    <h4>Schedule Google Meet</h4>
+                </div>
+
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>Google Meet Link</label>
+                        <input type="url" id="meetLink${req.requestId}" placeholder="https://meet.google.com/abc-defg-hij">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Meeting Date</label>
+                        <input type="date" id="meetDate${req.requestId}" min="${getTodayDate()}">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Meeting Time</label>
+                        <input type="time" id="meetTime${req.requestId}">
+                    </div>
+
+                    <button class="btn btn-primary" onclick="scheduleMeeting('${req.requestId}')">
+                        Schedule Meeting
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    return `
+        <div class="meeting-panel">
+            <div class="panel-title">
+                <h4>Meeting Pending</h4>
+            </div>
+            <p style="color:#64748b;font-size:14px;">Mentor will schedule the Google Meet soon.</p>
+        </div>
+    `;
+}
+
+function buildReviewSection(req){
+    if(req.status !== "Accepted") return "";
+    if(req.type !== "Outgoing") return "";
+
+    const userId = localStorage.getItem("userId");
+    const storageKey = getReviewStorageKey(req.requestId,userId);
+
+    if(localStorage.getItem(storageKey) === "submitted"){
+        return `
+            <div class="review-panel">
+                <div class="panel-title">
+                    <h4>Review Submitted</h4>
+                </div>
+                <p class="review-status">You have already reviewed this mentor.</p>
+            </div>
+        `;
+    }
+
+    return `
+        <div class="review-panel">
+            <div class="panel-title">
+                <h4>Rate Your Mentor</h4>
+            </div>
+
+            <div class="stars" data-request="${req.requestId}">
+                <span class="star" onclick="selectRating('${req.requestId}',1)">★</span>
+                <span class="star" onclick="selectRating('${req.requestId}',2)">★</span>
+                <span class="star" onclick="selectRating('${req.requestId}',3)">★</span>
+                <span class="star" onclick="selectRating('${req.requestId}',4)">★</span>
+                <span class="star" onclick="selectRating('${req.requestId}',5)">★</span>
+            </div>
+
+            <div class="input-group">
+                <label>Write Review</label>
+                <textarea id="reviewText${req.requestId}" placeholder="Share your learning experience..."></textarea>
+            </div>
+
+            <div class="actions">
+                <button class="btn btn-dark" onclick="submitReview('${req.requestId}','${req.otherId}')">
+                    Submit Review
+                </button>
+            </div>
+
+            <p class="review-status" id="reviewStatus${req.requestId}">
+                Select stars and write your review.
+            </p>
+        </div>
+    `;
+}
+
+function hasMeeting(req){
+    return req.meetLink &&
+           req.meetLink !== "null" &&
+           req.meetLink.trim() !== "" &&
+           req.meetingDate &&
+           req.meetingDate !== "null" &&
+           req.meetingTime &&
+           req.meetingTime !== "null";
+}
+
+function getTodayDate(){
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2,"0");
+    const day = String(today.getDate()).padStart(2,"0");
+    return `${year}-${month}-${day}`;
+}
+
+function formatTime(time){
+    if(!time || time === "null") return "-";
+
+    const parts = time.split(":");
+    let hour = parseInt(parts[0],10);
+    const minute = parts[1] || "00";
+    const ampm = hour >= 12 ? "PM" : "AM";
+
+    hour = hour % 12;
+    hour = hour ? hour : 12;
+
+    return `${hour}:${minute} ${ampm}`;
+}
+
+async function acceptRequest(requestId){
+    try{
+        const response = await fetch(`${API_BASE}/acceptRequest?id=${encodeURIComponent(requestId)}`);
+        const result = await response.text();
+
+        if(result.trim() === "accepted"){
+            showToast("Request accepted successfully.");
+            loadRequests();
+        }else{
+            showToast("Unable to accept request.");
+        }
+    }catch(error){
+        showToast("Backend connection failed.");
+    }
+}
+
+async function rejectRequest(requestId){
+    const confirmReject = confirm("Are you sure you want to reject this request?");
+    if(!confirmReject) return;
+
+    try{
+        const response = await fetch(`${API_BASE}/rejectRequest?id=${encodeURIComponent(requestId)}`);
+        const result = await response.text();
+
+        if(result.trim() === "rejected"){
+            showToast("Request rejected.");
+            loadRequests();
+        }else{
+            showToast("Unable to reject request.");
+        }
+    }catch(error){
+        showToast("Backend connection failed.");
+    }
+}
+
+async function scheduleMeeting(requestId){
+    const meetLink = document.getElementById("meetLink" + requestId).value.trim();
+    const meetingDate = document.getElementById("meetDate" + requestId).value;
+    const meetingTime = document.getElementById("meetTime" + requestId).value;
+
+    if(meetLink === "" || meetingDate === "" || meetingTime === ""){
+        showToast("Please fill Meet link, date and time.");
+        return;
+    }
+
+    if(!meetLink.startsWith("https://meet.google.com/")){
+        showToast("Please enter a valid Google Meet link.");
+        return;
+    }
+
+    const today = getTodayDate();
+    if(meetingDate < today){
+        showToast("Past dates are not allowed.");
+        return;
+    }
+
+    try{
+        const url =
+            `${API_BASE}/scheduleMeeting?requestId=${encodeURIComponent(requestId)}` +
+            `&meetLink=${encodeURIComponent(meetLink)}` +
+            `&meetingDate=${encodeURIComponent(meetingDate)}` +
+            `&meetingTime=${encodeURIComponent(meetingTime)}`;
+
+        const response = await fetch(url);
+        const result = await response.text();
+
+        if(result.trim() === "meeting_scheduled"){
+            showToast("Meeting scheduled successfully.");
+            loadRequests();
+        }else{
+            showToast("Meeting scheduling failed.");
+        }
+    }catch(error){
+        showToast("Backend connection failed.");
+    }
+}
+
+function selectRating(requestId,rating){
+    selectedRatings[requestId] = rating;
+
+    const stars = document.querySelectorAll(`.stars[data-request="${requestId}"] .star`);
+
+    stars.forEach((star,index) => {
+        if(index < rating){
+            star.classList.add("active");
+        }else{
+            star.classList.remove("active");
+        }
+    });
+
+    const status = document.getElementById("reviewStatus" + requestId);
+    if(status){
+        status.innerText = `${rating} star rating selected.`;
+    }
+}
+
+function applySavedRatingVisuals(){
+    Object.keys(selectedRatings).forEach(requestId => {
+        selectRating(requestId,selectedRatings[requestId]);
+    });
+}
+
+async function submitReview(requestId,mentorId){
+    const reviewerId = localStorage.getItem("userId");
+    const rating = selectedRatings[requestId];
+    const reviewBox = document.getElementById("reviewText" + requestId);
+    const review = reviewBox ? reviewBox.value.trim() : "";
+    const storageKey = getReviewStorageKey(requestId,reviewerId);
+
+    if(localStorage.getItem(storageKey) === "submitted"){
+        showToast("You have already submitted a review.");
+        renderRequests();
+        return;
+    }
+
+    if(!rating){
+        showToast("Please select a star rating.");
+        return;
+    }
+
+    if(review === ""){
+        showToast("Please write a review.");
+        return;
+    }
+
+    try{
+        const url =
+            `${API_BASE}/addRating?requestId=${encodeURIComponent(requestId)}` +
+            `&reviewerId=${encodeURIComponent(reviewerId)}` +
+            `&mentorId=${encodeURIComponent(mentorId)}` +
+            `&rating=${encodeURIComponent(rating)}` +
+            `&review=${encodeURIComponent(review)}`;
+
+        const response = await fetch(url);
+        const result = await response.text();
+
+        if(result.trim() === "rating_added"){
+            localStorage.setItem(storageKey,"submitted");
+            showToast("Review submitted successfully.");
+            loadRequests();
+        }else if(result.trim() === "already_rated"){
+            localStorage.setItem(storageKey,"submitted");
+            showToast("Duplicate review prevented.");
+            loadRequests();
+        }else if(result.trim() === "invalid_rating"){
+            showToast("Invalid rating.");
+        }else{
+            showToast("Review submission failed.");
+        }
+
+    }catch(error){
+        showToast("Backend connection failed.");
+    }
+}
+
+function getReviewStorageKey(requestId,userId){
+    return `skillsphere_review_${requestId}_${userId}`;
+}
+
+function showToast(message){
+    const toast = document.getElementById("toast");
+    toast.innerText = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2600);
+}
+
+function safe(value){
+    if(value === undefined || value === null || value === "null") return "";
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+function safeUrl(value){
+    if(!value || value === "null") return "#";
+    return String(value).replaceAll('"',"%22").replaceAll("'","%27");
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login | SkillSphere AI</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:radial-gradient(circle at top left,#e8f1ff 0,#f8fbff 35%,#eef3f8 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+}
+
+.login-card{
+    width:100%;
+    max-width:460px;
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:30px;
+    padding:40px;
+    text-align:center;
+    box-shadow:0 25px 65px rgba(15,23,42,.14);
+    animation:fadeUp .45s ease;
+}
+
+.logo{
+    width:70px;
+    height:70px;
+    margin:0 auto 20px;
+    border-radius:22px;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    font-weight:bold;
+}
+
+h1{
+    color:#0f172a;
+    font-size:34px;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    color:#64748b;
+    margin-bottom:28px;
+    font-size:16px;
+}
+
+.input-group{
+    margin-bottom:18px;
+}
+
+.input-group input{
+    width:100%;
+    padding:15px;
+    border:1px solid #cbd5e1;
+    border-radius:15px;
+    outline:none;
+    font-size:15px;
+    background:#f8fafc;
+    transition:.2s;
+}
+
+.input-group input:focus{
+    border-color:#2563eb;
+    background:white;
+    box-shadow:0 0 0 4px rgba(37,99,235,.12);
+}
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:15px;
+    background:#2563eb;
+    color:white;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.25s;
+}
+
+button:hover{
+    background:#1d4ed8;
+    transform:translateY(-2px);
+}
+
+.bottom{
+    margin-top:22px;
+    color:#64748b;
+}
+
+.bottom a{
+    color:#2563eb;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.bottom a:hover{
+    text-decoration:underline;
+}
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(18px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+</style>
+
+</head>
+<body>
+
+<div class="login-card">
+
+    <div class="logo">✦</div>
+
+    <h1>Welcome Back</h1>
+
+    <p class="subtitle">
+        Login to continue using SkillSphere AI
+    </p>
+
+    <div class="input-group">
+        <input
+            type="email"
+            id="email"
+            placeholder="Email Address">
+    </div>
+
+    <div class="input-group">
+        <input
+            type="password"
+            id="password"
+            placeholder="Password">
+    </div>
+
+    <button onclick="checkLogin()">
+        Login
+    </button>
+
+    <div class="bottom">
+        Don't have an account?
+        <a href="register.html">
+            Register
+        </a>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

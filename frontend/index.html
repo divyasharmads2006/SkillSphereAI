@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillSphere AI</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:radial-gradient(circle at top left,#e8f1ff 0,#f8fbff 35%,#eef3f8 100%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:30px;
+}
+
+.card{
+    width:100%;
+    max-width:520px;
+    background:white;
+    border-radius:30px;
+    padding:42px;
+    text-align:center;
+    box-shadow:0 25px 65px rgba(15,23,42,.14);
+    animation:fadeUp .5s ease;
+}
+
+.logo-icon{
+    width:70px;
+    height:70px;
+    margin:0 auto 18px;
+    border-radius:22px;
+    background:linear-gradient(135deg,#2563eb,#7c3aed);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+}
+
+h1{
+    font-size:36px;
+    color:#0f172a;
+    margin-bottom:10px;
+}
+
+p{
+    color:#64748b;
+    font-size:17px;
+    margin-bottom:28px;
+}
+
+.btn{
+    display:block;
+    width:100%;
+    text-decoration:none;
+    border:none;
+    padding:15px;
+    border-radius:16px;
+    font-size:16px;
+    font-weight:700;
+    margin-top:12px;
+    transition:.25s ease;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.login{
+    background:#2563eb;
+    color:white;
+}
+
+.register{
+    background:#eef2ff;
+    color:#3730a3;
+}
+
+@keyframes fadeUp{
+    from{opacity:0;transform:translateY(18px);}
+    to{opacity:1;transform:translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <div class="logo-icon">✦</div>
+    <h1>SkillSphere AI</h1>
+    <p>Learn skills. Teach skills. Grow together.</p>
+
+    <a href="login.html" class="btn login">Login</a>
+    <a href="register.html" class="btn register">Create Account</a>
+</div>
+
+</body>
+</html>
