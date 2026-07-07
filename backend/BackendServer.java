@@ -14,6 +14,25 @@ public class BackendServer {
         try {
             int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
              HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+             server.createContext("/", exchange -> {
+    try {
+        java.nio.file.Path path = java.nio.file.Paths.get("../frontend/index.html");
+        byte[] bytes = java.nio.file.Files.readAllBytes(path);
+
+        exchange.getResponseHeaders().add("Content-Type", "text/html");
+        exchange.sendResponseHeaders(200, bytes.length);
+        OutputStream os = exchange.getResponseBody();
+        os.write(bytes);
+        os.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+        try {
+    sendResponse(exchange, "Frontend not found");
+} catch (Exception ex) {
+    ex.printStackTrace();
+}
+    }
+});
             server.createContext("/login", exchange -> {
                 try {
                     String q = exchange.getRequestURI().getQuery();
