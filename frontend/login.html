@@ -166,7 +166,43 @@ button:hover{
 
 </div>
 
-<script src="script.js"></script>
+<script>
+function checkLogin() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (email === "" || password === "") {
+        alert("Please enter email and password");
+        return;
+    }
+
+    fetch("/login?email=" + encodeURIComponent(email) + "&password=" + encodeURIComponent(password))
+        .then(res => res.text())
+        .then(data => {
+            if (data.startsWith("success")) {
+                const parts = data.split("|");
+
+                localStorage.setItem("userId", parts[1]);
+                localStorage.setItem("name", parts[2]);
+                localStorage.setItem("email", parts[3]);
+                localStorage.setItem("teachingSkill", parts[4]);
+                localStorage.setItem("learningSkill", parts[5]);
+                localStorage.setItem("department", parts[6]);
+                localStorage.setItem("role", parts[7]);
+                localStorage.setItem("badge", parts[8]);
+                localStorage.setItem("reputation", parts[9]);
+
+                window.location.href = "dashboard.html";
+            } else {
+                alert("Invalid email or password");
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Login failed. Try again.");
+        });
+}
+</script>
 
 </body>
 </html>
