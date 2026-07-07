@@ -1,6 +1,5 @@
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpExchange;
-
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.URLDecoder;
@@ -13,8 +12,8 @@ public class BackendServer {
 
     public static void main(String[] args) {
         try {
-            HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-
+            int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
+             HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
             server.createContext("/login", exchange -> {
                 try {
                     String q = exchange.getRequestURI().getQuery();
@@ -174,7 +173,7 @@ public class BackendServer {
             });
 
             server.start();
-            System.out.println("Server started on http://localhost:8080");
+            System.out.println("Server started on port " + port);
 
         } catch (Exception e) {
             e.printStackTrace();
